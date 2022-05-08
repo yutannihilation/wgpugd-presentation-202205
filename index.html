@@ -391,7 +391,12 @@
 <h2>ドーモ！</h2>
 
 <img data-src="images/icon.jpg" class="r-stretch quarto-figure-center"></section>
-<section id="グラフィックデバイスとは" class="slide level2">
+<section>
+<section id="グラフィックデバイスとは" class="title-slide slide level1 center">
+<h1>グラフィックデバイスとは？</h1>
+
+</section>
+<section id="グラフィックデバイスとは-1" class="slide level2">
 <h2>グラフィックデバイスとは？</h2>
 <ul>
 <li><p>Rでは、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、</p>
@@ -484,13 +489,84 @@
 </tr>
 </tbody>
 </table>
+</section></section>
+<section>
+<section id="webgpu-とは" class="title-slide slide level1 center">
+<h1>WebGPU とは？</h1>
+
 </section>
-<section id="webgpu-とは" class="slide level2">
-<h2>WebGPU とは？</h2>
+<section id="webgpu-1-とは" class="slide level2">
+<h2>WebGPU <sup>1</sup> とは？</h2>
+<ul>
+<li><p>GPU を使ってレンダリングや計算などの処理をするためのAPI。</p></li>
+<li><p>「Web」とついているところから察せられるように、ウェブブラウザでの利用が想定されている。Chrome や Firefox にもすでに入っている（デフォルトでは無効）</p></li>
+<li><p>ただし、<strong>ウェブ用に設計されたからといってウェブ専用の API ではない</strong><sup>2</sup>（重要）</p></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p><a href="https://gpuweb.github.io/gpuweb/">WebGPU spec</a></p></li><li id="fn2" role="doc-endnote"><p>c.f. <a href="https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html">Point of WebGPU on native</a></p></li></ol></aside></section>
+<section id="なぜ-webgpu-が必要なの" class="slide level2">
+<h2>なぜ WebGPU が必要なの？</h2>
+<ul>
+<li>GPU を使うためのグラフィックス API はすでに様々あるが、プラットフォームごとに使える API が違い、それぞれに対応しようと思うと実装コストが大変なので、抽象化されたレイヤーが必要
+<ul>
+<li><p>Windows: Direct3D 12, Direct3D 11, Vulkan</p></li>
+<li><p>macOS: Metal, MoltenVK (Vulkan)</p></li>
+<li><p>Linux: Vulkan</p></li>
+</ul></li>
+<li>あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある</li>
+</ul>
+</section>
+<section id="vulkan-でよくない" class="slide level2">
+<h2>Vulkan でよくない？</h2>
+<ul>
+<li><p>Vulkan ではポータビリティが足りない（古いデバイスや macOS / iOS）</p></li>
+<li><p>セキュリティや安定性</p></li>
+<li><p>（あとは政治的な理由もありそう）</p></li>
+</ul>
+</section>
+<section id="webgl-opengl-でよくない" class="slide level2">
+<h2>WebGL / OpenGL でよくない？</h2>
+<ul>
+<li><p>たしかに、GL 系はポータビリティの観点では優れている（実際、OpenGL ES は WebGPU 実装のバックエンドにも入っていたりする）</p></li>
+<li><p>しかし、GL 系はさまざまな負債を背負っており、最近のアーキテクチャに使うにはオーバーヘッドや制限が大きい<sup>1</sup>、らしい</p></li>
+<li><p>（あとは政治的な理由もありそう）</p></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn3" role="doc-endnote"><p><a href="https://qiita.com/emadurandal/items/3c0f8e06d443346aad8f">WebGPUでガチリアルタイムレンダリングの世界が見えてきた - Qiita</a></p></li></ol></aside></section>
+<section id="webgpu-の主な実装" class="slide level2">
+<h2>WebGPU の主な実装</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="dawn-c">Dawn (C++)</h3>
+<ul>
+<li>Google 陣営</li>
+</ul>
+<p><img data-src="images/dawn-logo.svg" width="400"></p>
+</div><div class="column" style="width:50%;">
+<h3 id="wgpu-rust">wgpu (Rust)</h3>
+<ul>
+<li>Mozilla 陣営</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/wgpu-logo.png" width="312"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="参考文献" class="slide level2">
+<h2>参考文献</h2>
+</section>
+<section id="ライセンス" class="slide level2">
+<h2>ライセンス</h2>
+<ul>
+<li>dawn のロゴは Google によって作成され、CC-4.0-BY ライセンスで公開されています（ref: <a href="https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/" class="uri">https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/</a>）</li>
+<li>wgpu のロゴは gfx-rs developers によって作成され、MIT ライセンスで公開されています（ref: <a href="https://github.com/gfx-rs/wgpu/blob/master/logo.png" class="uri">https://github.com/gfx-rs/wgpu/blob/master/logo.png</a>）</li>
+</ul>
 <div class="footer footer-default">
 
 </div>
-</section>
+</section></section>
+
     </div>
   </div>
 

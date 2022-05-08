@@ -18,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![](images/icon.jpg){fig-align="center"}
 
+# グラフィックデバイスとは？
+
 ## グラフィックデバイスとは？
 
 -   Rでは、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、
@@ -76,4 +78,71 @@ grid::grid.points(
 | `clip()`                                | 描画範囲を設定する                         |
 | `activate()`, `deactivate()`, `close()` | デバイスが開かれた時や閉じられた時のフック |
 
-## WebGPU とは？
+# WebGPU とは？
+
+## WebGPU [^1] とは？
+
+[^1]: [WebGPU spec](https://gpuweb.github.io/gpuweb/)
+
+-   GPU を使ってレンダリングや計算などの処理をするためのAPI。
+
+-   「Web」とついているところから察せられるように、ウェブブラウザでの利用が想定されている。Chrome や Firefox にもすでに入っている（デフォルトでは無効）
+
+-   ただし、**ウェブ用に設計されたからといってウェブ専用の API ではない**[^2]（重要）
+
+[^2]: c.f. [Point of WebGPU on native](https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html)
+
+## なぜ WebGPU が必要なの？
+
+-   GPU を使うためのグラフィックス API はすでに様々あるが、プラットフォームごとに使える API が違い、それぞれに対応しようと思うと実装コストが大変なので、抽象化されたレイヤーが必要
+    -   Windows: Direct3D 12, Direct3D 11, Vulkan
+
+    -   macOS: Metal, MoltenVK (Vulkan)
+
+    -   Linux: Vulkan
+-   あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある
+
+## Vulkan でよくない？
+
+-   Vulkan ではポータビリティが足りない（古いデバイスや macOS / iOS）
+
+-   セキュリティや安定性
+
+-   （あとは政治的な理由もありそう）
+
+## WebGL / OpenGL でよくない？
+
+-   たしかに、GL 系はポータビリティの観点では優れている（実際、OpenGL ES は WebGPU 実装のバックエンドにも入っていたりする）
+
+-   しかし、GL 系はさまざまな負債を背負っており、最近のアーキテクチャに使うにはオーバーヘッドや制限が大きい[^3]、らしい
+
+-   （あとは政治的な理由もありそう）
+
+[^3]: [WebGPUでガチリアルタイムレンダリングの世界が見えてきた - Qiita](https://qiita.com/emadurandal/items/3c0f8e06d443346aad8f)
+
+## WebGPU の主な実装
+
+::: columns
+::: {.column width="50%"}
+### Dawn (C++)
+
+-   Google 陣営
+
+![](images/dawn-logo.svg){width="400"}
+:::
+
+::: {.column width="50%"}
+### wgpu (Rust)
+
+-   Mozilla 陣営
+
+![](images/wgpu-logo.png){fig-align="center" width="312"}
+:::
+:::
+
+## 参考文献
+
+## ライセンス
+
+-   dawn のロゴは Google によって作成され、CC-4.0-BY ライセンスで公開されています（ref: <https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/>）
+-   wgpu のロゴは gfx-rs developers によって作成され、MIT ライセンスで公開されています（ref: <https://github.com/gfx-rs/wgpu/blob/master/logo.png>）
