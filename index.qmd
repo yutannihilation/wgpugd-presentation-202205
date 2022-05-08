@@ -146,6 +146,10 @@ grid::grid.points(
     -   Linux: Vulkan
 -   あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある
 
+## イメージ図
+
+!\[いい感じのイメージ図がここに入るかもしれない\](images/iikanji.gif)
+
 ## Vulkan でよくない？
 
 -   Vulkan ではポータビリティが足りない（古いデバイスや macOS / iOS）
@@ -252,7 +256,7 @@ Rust でグラフィックデバイスをつくったとして、
 
 ## イメージ図
 
-!\[いい感じのイメージ図がここに入る\](images/iikanji.gif)
+!\[いい感じのイメージ図がここに入ったらうれしい\](images/iikanji.gif)
 
 # グラフィックデバイスを実装する
 
@@ -322,6 +326,94 @@ fn sd_circle(
 | `text()`   | tessellation | SDF font の実装方法がよくわからなかった                          |
 | `raster()` | （未実装）   |                                                                  |
 | ...        |              |                                                                  |
+
+## イメージ図
+
+!\[いい感じのイメージ図がここに入る未来が見える\](images/iikanji.gif)
+
+## 結果
+
+動いた
+
+![](images/normal.png){fig-align="center"}
+
+## おもしろシェーダー芸
+
+色を反転
+
+![](images/nega.png){fig-align="center"}
+
+## おもしろシェーダー芸
+
+ブラウン管ディスプレイエフェクト（[Babylon.js のブログ記事](https://babylonjs.medium.com/retro-crt-shader-a-post-processing-effect-study-1cb3f783afbc)を元に実装）
+
+![](images/shader.png){fig-align="center"}
+
+## ブラウン管ディスプレイエフェクトのコード（WGSL）
+
+``` {.rust style="font-size: 0.6em"}
+let CURVATURE: vec2<f32> = vec2<f32>(3.0, 3.0);
+let RESOLUTION: vec2<f32> = vec2<f32>(100.0, 100.0);
+let BRIGHTNESS: f32 = 4.0;
+
+let PI: f32 = 3.14159;
+
+fn curveRemapUV(uv_in: vec2<f32>) -> vec2<f32> {
+    var uv_out: vec2<f32>;
+
+    // as we near the edge of our screen apply greater distortion using a cubic function
+    uv_out = uv_in * 2.0 - 1.0;
+    var offset: vec2<f32> = abs(uv_out.yx) / CURVATURE;
+
+    uv_out = uv_out + uv_out * offset * offset;
+    return uv_out * 0.5 + 0.5;
+}
+
+fn scanLineIntensity(uv_in: f32, resolution: f32, opacity: f32) -> vec4<f32> {
+     var intensity: f32 = sin(uv_in * resolution * PI * 2.0);
+     intensity = ((0.5 * intensity) + 0.5) * 0.9 + 0.1;
+     return vec4<f32>(vec3<f32>(pow(intensity, opacity)), 1.0);
+ }
+
+fn vignetteIntensity(uv_in: vec2<f32>, resolution: vec2<f32>, opacity: f32, roundness: f32) -> vec4<f32> {
+    var intensity: f32 = uv_in.x * uv_in.y * (1.0 - uv_in.x) * (1.0 - uv_in.y);
+    return vec4<f32>(vec3<f32>(clamp(pow((resolution.x / roundness) * intensity, opacity), 0.0, 1.0)), 1.0);
+}
+
+@vertex
+...snip...
+
+@fragment
+fn fs_main(
+    vs_out: VertexOutput
+) -> @location(0) vec4<f32> {
+    var remapped_tex_coords = curveRemapUV(vs_out.tex_coords);
+    var color: vec4<f32> = textureSample(r_texture, r_sampler, remapped_tex_coords);
+    
+    color *= vignetteIntensity(remapped_tex_coords, RESOLUTION, 1.0, 2.0);
+    
+    color *= scanLineIntensity(remapped_tex_coords.x, RESOLUTION.y, 1.0);
+    color *= scanLineIntensity(remapped_tex_coords.y, RESOLUTION.x, 1.0);
+    
+    return vec4<f32>(color.rgb * BRIGHTNESS, 1.0);
+}
+```
+
+## レポジトリ
+
+* <https://github.com/yutannihilation/wgpugd>
+
+## つらかったところ、課題など
+
+-   Rust が panic を起こすと R のセッションが即死してしまいログが残らない。原因究明がむずかしい。\
+    →　R のセッションなしでも動くように設計を見直す
+
+-   ユーザーから shader などを受け取れるようにしたいけど、bloom のように繰り返し適用するようなポストエフェクトをどう表現すればいいか閃かない
+
+## 感想
+
+-   なんとなく、GPU のパワーで爆速！、と思ってたけど、二次元の画像を1枚生成するだけなら CPU の方が速かった。tessellation や GPU とデータをやりとりするためのバッファの準備など、事前のコストがけっこう大きい。（単に私の実装がしょぼいだけ、という可能性もかなりあります）
+
 
 ## 参考文献
 

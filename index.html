@@ -551,6 +551,10 @@
 <li>あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある</li>
 </ul>
 </section>
+<section id="イメージ図" class="slide level2">
+<h2>イメージ図</h2>
+<p>![いい感じのイメージ図がここに入るかもしれない](images/iikanji.gif)</p>
+</section>
 <section id="vulkan-でよくない" class="slide level2">
 <h2>Vulkan でよくない？</h2>
 <ul>
@@ -652,9 +656,9 @@
 <p><a href="https://tokyor92-slides-rust-and-r.vercel.app/" class="uri">https://tokyor92-slides-rust-and-r.vercel.app/</a></p>
 
 <img data-src="images/extendr-tokyor92.png" class="r-stretch quarto-figure-center"></section>
-<section id="イメージ図" class="slide level2">
+<section id="イメージ図-1" class="slide level2">
 <h2>イメージ図</h2>
-<p>![いい感じのイメージ図がここに入る](images/iikanji.gif)</p>
+<p>![いい感じのイメージ図がここに入ったらうれしい](images/iikanji.gif)</p>
 </section></section>
 <section>
 <section id="グラフィックデバイスを実装する" class="title-slide slide level1 center">
@@ -762,6 +766,93 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="イメージ図-2" class="slide level2">
+<h2>イメージ図</h2>
+<p>![いい感じのイメージ図がここに入る未来が見える](images/iikanji.gif)</p>
+</section>
+<section id="結果" class="slide level2">
+<h2>結果</h2>
+<p>動いた</p>
+
+<img data-src="images/normal.png" class="r-stretch quarto-figure-center"></section>
+<section id="おもしろシェーダー芸" class="slide level2">
+<h2>おもしろシェーダー芸</h2>
+<p>色を反転</p>
+
+<img data-src="images/nega.png" class="r-stretch quarto-figure-center"></section>
+<section id="おもしろシェーダー芸-1" class="slide level2">
+<h2>おもしろシェーダー芸</h2>
+<p>ブラウン管ディスプレイエフェクト（<a href="https://babylonjs.medium.com/retro-crt-shader-a-post-processing-effect-study-1cb3f783afbc">Babylon.js のブログ記事</a>を元に実装）</p>
+
+<img data-src="images/shader.png" class="r-stretch quarto-figure-center"></section>
+<section id="ブラウン管ディスプレイエフェクトのコードwgsl" class="slide level2">
+<h2>ブラウン管ディスプレイエフェクトのコード（WGSL）</h2>
+<div class="sourceCode" id="cb6" style="font-size: 0.6em"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">let</span> CURVATURE<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">=</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(<span class="dv">3.0</span><span class="op">,</span> <span class="dv">3.0</span>)<span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">let</span> RESOLUTION<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">=</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(<span class="dv">100.0</span><span class="op">,</span> <span class="dv">100.0</span>)<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">let</span> BRIGHTNESS<span class="op">:</span> <span class="dt">f32</span> <span class="op">=</span> <span class="dv">4.0</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">let</span> PI<span class="op">:</span> <span class="dt">f32</span> <span class="op">=</span> <span class="dv">3.14159</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">fn</span> curveRemapUV(uv_in<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    var uv_out<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;;</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="co">// as we near the edge of our screen apply greater distortion using a cubic function</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    uv_out <span class="op">=</span> uv_in <span class="op">*</span> <span class="dv">2.0</span> <span class="op">-</span> <span class="dv">1.0</span><span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>    var offset<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">=</span> abs(uv_out<span class="op">.</span>yx) <span class="op">/</span> CURVATURE<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a>    uv_out <span class="op">=</span> uv_out <span class="op">+</span> uv_out <span class="op">*</span> offset <span class="op">*</span> offset<span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>    <span class="cf">return</span> uv_out <span class="op">*</span> <span class="dv">0.5</span> <span class="op">+</span> <span class="dv">0.5</span><span class="op">;</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="op">}</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="kw">fn</span> scanLineIntensity(uv_in<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span> resolution<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span> opacity<span class="op">:</span> <span class="dt">f32</span>) <span class="op">-&gt;</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>     var intensity<span class="op">:</span> <span class="dt">f32</span> <span class="op">=</span> sin(uv_in <span class="op">*</span> resolution <span class="op">*</span> PI <span class="op">*</span> <span class="dv">2.0</span>)<span class="op">;</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>     intensity <span class="op">=</span> ((<span class="dv">0.5</span> <span class="op">*</span> intensity) <span class="op">+</span> <span class="dv">0.5</span>) <span class="op">*</span> <span class="dv">0.9</span> <span class="op">+</span> <span class="dv">0.1</span><span class="op">;</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>     <span class="cf">return</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(vec3<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(pow(intensity<span class="op">,</span> opacity))<span class="op">,</span> <span class="dv">1.0</span>)<span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a> <span class="op">}</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="kw">fn</span> vignetteIntensity(uv_in<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;,</span> resolution<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;,</span> opacity<span class="op">:</span> <span class="dt">f32</span><span class="op">,</span> roundness<span class="op">:</span> <span class="dt">f32</span>) <span class="op">-&gt;</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>    var intensity<span class="op">:</span> <span class="dt">f32</span> <span class="op">=</span> uv_in<span class="op">.</span>x <span class="op">*</span> uv_in<span class="op">.</span>y <span class="op">*</span> (<span class="dv">1.0</span> <span class="op">-</span> uv_in<span class="op">.</span>x) <span class="op">*</span> (<span class="dv">1.0</span> <span class="op">-</span> uv_in<span class="op">.</span>y)<span class="op">;</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>    <span class="cf">return</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(vec3<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(clamp(pow((resolution<span class="op">.</span>x <span class="op">/</span> roundness) <span class="op">*</span> intensity<span class="op">,</span> opacity)<span class="op">,</span> <span class="dv">0.0</span><span class="op">,</span> <span class="dv">1.0</span>))<span class="op">,</span> <span class="dv">1.0</span>)<span class="op">;</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="op">}</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="op">@</span>vertex</span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="op">...</span>snip<span class="op">...</span></span>
+<span id="cb6-31"><a href="#cb6-31"></a></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="op">@</span>fragment</span>
+<span id="cb6-33"><a href="#cb6-33"></a><span class="kw">fn</span> fs_main(</span>
+<span id="cb6-34"><a href="#cb6-34"></a>    vs_out<span class="op">:</span> VertexOutput</span>
+<span id="cb6-35"><a href="#cb6-35"></a>) <span class="op">-&gt;</span> <span class="op">@</span>location(<span class="dv">0</span>) vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>    var remapped_tex_coords <span class="op">=</span> curveRemapUV(vs_out<span class="op">.</span>tex_coords)<span class="op">;</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a>    var color<span class="op">:</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span> <span class="op">=</span> textureSample(r_texture<span class="op">,</span> r_sampler<span class="op">,</span> remapped_tex_coords)<span class="op">;</span></span>
+<span id="cb6-38"><a href="#cb6-38"></a>    </span>
+<span id="cb6-39"><a href="#cb6-39"></a>    color <span class="op">*=</span> vignetteIntensity(remapped_tex_coords<span class="op">,</span> RESOLUTION<span class="op">,</span> <span class="dv">1.0</span><span class="op">,</span> <span class="dv">2.0</span>)<span class="op">;</span></span>
+<span id="cb6-40"><a href="#cb6-40"></a>    </span>
+<span id="cb6-41"><a href="#cb6-41"></a>    color <span class="op">*=</span> scanLineIntensity(remapped_tex_coords<span class="op">.</span>x<span class="op">,</span> RESOLUTION<span class="op">.</span>y<span class="op">,</span> <span class="dv">1.0</span>)<span class="op">;</span></span>
+<span id="cb6-42"><a href="#cb6-42"></a>    color <span class="op">*=</span> scanLineIntensity(remapped_tex_coords<span class="op">.</span>y<span class="op">,</span> RESOLUTION<span class="op">.</span>x<span class="op">,</span> <span class="dv">1.0</span>)<span class="op">;</span></span>
+<span id="cb6-43"><a href="#cb6-43"></a>    </span>
+<span id="cb6-44"><a href="#cb6-44"></a>    <span class="cf">return</span> vec4<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;</span>(color<span class="op">.</span>rgb <span class="op">*</span> BRIGHTNESS<span class="op">,</span> <span class="dv">1.0</span>)<span class="op">;</span></span>
+<span id="cb6-45"><a href="#cb6-45"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="レポジトリ" class="slide level2">
+<h2>レポジトリ</h2>
+<ul>
+<li><a href="https://github.com/yutannihilation/wgpugd" class="uri">https://github.com/yutannihilation/wgpugd</a></li>
+</ul>
+</section>
+<section id="つらかったところ課題など" class="slide level2">
+<h2>つらかったところ、課題など</h2>
+<ul>
+<li><p>Rust が panic を起こすと R のセッションが即死してしまいログが残らない。原因究明がむずかしい。<br>
+→　R のセッションなしでも動くように設計を見直す</p></li>
+<li><p>ユーザーから shader などを受け取れるようにしたいけど、bloom のように繰り返し適用するようなポストエフェクトをどう表現すればいいか閃かない</p></li>
+</ul>
+</section>
+<section id="感想" class="slide level2">
+<h2>感想</h2>
+<ul>
+<li>なんとなく、GPU のパワーで爆速！、と思ってたけど、二次元の画像を1枚生成するだけなら CPU の方が速かった。tessellation や GPU とデータをやりとりするためのバッファの準備など、事前のコストがけっこう大きい。（単に私の実装がしょぼいだけ、という可能性もかなりあります）</li>
+</ul>
 </section>
 <section id="参考文献" class="slide level2">
 <h2>参考文献</h2>
