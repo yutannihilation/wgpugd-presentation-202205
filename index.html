@@ -610,6 +610,13 @@
 <p>Learn Wgpu: <a href="https://sotrh.github.io/learn-wgpu/" class="uri">https://sotrh.github.io/learn-wgpu/</a></p>
 
 <img data-src="images/learn-wgpu-screenshot.png" class="r-stretch quarto-figure-center"></section>
+<section id="なぜ-webgpu-で-r-のグラフィックデバイスをつくりたいのか" class="slide level2">
+<h2>なぜ WebGPU で R のグラフィックデバイスをつくりたいのか？</h2>
+<ul>
+<li><p>おもしろポストエフェクトをかけたりして shader 芸で遊びたい</p></li>
+<li><p>グラフィックデバイスの実装に OS 間で差があり、Windows で使えるいい感じのインタラクティブなグラフィックデバイスがない</p></li>
+</ul>
+</section>
 <section id="ところで" class="slide level2">
 <h2>ところで…</h2>
 <p>Rust でグラフィックデバイスをつくったとして、</p>
@@ -645,6 +652,117 @@
 <p><a href="https://tokyor92-slides-rust-and-r.vercel.app/" class="uri">https://tokyor92-slides-rust-and-r.vercel.app/</a></p>
 
 <img data-src="images/extendr-tokyor92.png" class="r-stretch quarto-figure-center"></section>
+<section id="イメージ図" class="slide level2">
+<h2>イメージ図</h2>
+<p>![いい感じのイメージ図がここに入る](images/iikanji.gif)</p>
+</section></section>
+<section>
+<section id="グラフィックデバイスを実装する" class="title-slide slide level1 center">
+<h1>グラフィックデバイスを実装する</h1>
+
+</section>
+<section id="gpu-上で絵を描くには" class="slide level2">
+<h2>GPU 上で絵を描くには？</h2>
+<ol type="1">
+<li>描きたい図形を三角形のメッシュに変換する（tessellation）</li>
+<li>描きたい図形を signed distance function (SDF) で表現する</li>
+<li>ラスターデータをテクスチャとして貼り付ける</li>
+</ol>
+</section>
+<section id="tessellation" class="slide level2">
+<h2>Tessellation</h2>
+<ul>
+<li>GPU は三角形のメッシュしか描けないので、あらかじめ CPU 側で図形を三角形に切り刻む処理</li>
+<li>Rust だと <a href="https://github.com/nical/lyon">lyon</a>というライブラリを使う</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/untessellated_R.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/tessellated_R.png"></p>
+</div>
+</div>
+</section>
+<section id="sdf" class="slide level2">
+<h2>SDF</h2>
+<ul>
+<li><p>単純な図形ならこちらの方が負荷が少なく、実装も簡単</p></li>
+<li><p>（簡単な図形じゃなくても、例えばテキストもSDF化してレンダリングすることもある）</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">fn</span> sd_circle(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  p<span class="op">:</span> vec2<span class="op">&lt;</span><span class="dt">f32</span><span class="op">&gt;,</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  r<span class="op">:</span> <span class="dt">f32</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>) <span class="op">-&gt;</span> <span class="dt">f32</span> <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="cf">return</span> length(p) <span class="op">-</span> r<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:40%;">
+<p><img data-src="images/sdf_circle.png"></p>
+</div>
+</div>
+</section>
+<section id="参考よくあるsdf一覧" class="slide level2">
+<h2>参考）よくあるSDF一覧</h2>
+<p><a href="https://iquilezles.org/articles/distfunctions2d/" class="uri">https://iquilezles.org/articles/distfunctions2d/</a></p>
+
+<img data-src="images/iq_scresnshot.png" class="r-stretch quarto-figure-center"></section>
+<section id="ラスターデータをテクスチャとして貼り付ける" class="slide level2">
+<h2>ラスターデータをテクスチャとして貼り付ける</h2>
+<ul>
+<li><p>ラスタデータはこうする必要がある（今回は未実装）</p></li>
+<li><p>テキストも一度ラスタ化してから貼り付けることもある</p></li>
+</ul>
+</section>
+<section id="今回の実装" class="slide level2">
+<h2>今回の実装</h2>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 71%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>API</th>
+<th>実装方式</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>line()</code></td>
+<td>tessellation</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>circle()</code></td>
+<td>SDF</td>
+<td>円はプロットで最もよく使われる図形のひとつ。なるべく軽くするため</td>
+</tr>
+<tr class="odd">
+<td><code>rect()</code></td>
+<td>tessellation</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>text()</code></td>
+<td>tessellation</td>
+<td>SDF font の実装方法がよくわからなかった</td>
+</tr>
+<tr class="odd">
+<td><code>raster()</code></td>
+<td>（未実装）</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="参考文献" class="slide level2">
 <h2>参考文献</h2>
 <ul>

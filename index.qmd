@@ -210,6 +210,12 @@ Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 [![](images/learn-wgpu-screenshot.png){fig-align="center"}](https://sotrh.github.io/learn-wgpu/)
 
+## なぜ WebGPU で R のグラフィックデバイスをつくりたいのか？
+
+-   おもしろポストエフェクトをかけたりして shader 芸で遊びたい
+
+-   グラフィックデバイスの実装に OS 間で差があり、Windows で使えるいい感じのインタラクティブなグラフィックデバイスがない
+
 ## ところで...
 
 Rust でグラフィックデバイスをつくったとして、
@@ -243,6 +249,79 @@ Rust でグラフィックデバイスをつくったとして、
 <https://tokyor92-slides-rust-and-r.vercel.app/>
 
 [![](images/extendr-tokyor92.png)](https://tokyor92-slides-rust-and-r.vercel.app/)
+
+## イメージ図
+
+!\[いい感じのイメージ図がここに入る\](images/iikanji.gif)
+
+# グラフィックデバイスを実装する
+
+## GPU 上で絵を描くには？
+
+1.  描きたい図形を三角形のメッシュに変換する（tessellation）
+2.  描きたい図形を signed distance function (SDF) で表現する
+3.  ラスターデータをテクスチャとして貼り付ける
+
+## Tessellation
+
+-   GPU は三角形のメッシュしか描けないので、あらかじめ CPU 側で図形を三角形に切り刻む処理
+-   Rust だと [lyon](https://github.com/nical/lyon)というライブラリを使う
+
+::: columns
+::: {.column width="50%"}
+![](images/untessellated_R.png)
+:::
+
+::: {.column width="50%"}
+![](images/tessellated_R.png)
+:::
+:::
+
+## SDF
+
+-   単純な図形ならこちらの方が負荷が少なく、実装も簡単
+
+-   （簡単な図形じゃなくても、例えばテキストもSDF化してレンダリングすることもある）
+
+::: columns
+::: {.column width="60%"}
+``` rust
+fn sd_circle(
+  p: vec2<f32>,
+  r: f32
+) -> f32 {
+  return length(p) - r;
+}
+```
+:::
+
+::: {.column width="40%"}
+![](images/sdf_circle.png)
+:::
+:::
+
+## 参考）よくあるSDF一覧
+
+<https://iquilezles.org/articles/distfunctions2d/>
+
+![](images/iq_scresnshot.png){fig-align="center"}
+
+## ラスターデータをテクスチャとして貼り付ける
+
+-   ラスタデータはこうする必要がある（今回は未実装）
+
+-   テキストも一度ラスタ化してから貼り付けることもある
+
+## 今回の実装
+
+| API        | 実装方式     | 理由                                                             |
+|------------|--------------|------------------------------------------------------------------|
+| `line()`   | tessellation |                                                                  |
+| `circle()` | SDF          | 円はプロットで最もよく使われる図形のひとつ。なるべく軽くするため |
+| `rect()`   | tessellation |                                                                  |
+| `text()`   | tessellation | SDF font の実装方法がよくわからなかった                          |
+| `raster()` | （未実装）   |                                                                  |
+| ...        |              |                                                                  |
 
 ## 参考文献
 
