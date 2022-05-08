@@ -1,8 +1,10 @@
 /*-- scss:defaults --*/
 
 // fonts
-$presentation-heading-font: "Noto Sans JP", !default;
-$font-family-sans-serif: "Noto Sans JP", !default;
-$font-family-monospace: "Iosevka SS08", !default;
+$presentation-heading-font: "Noto Sans JP";
+$font-family-sans-serif: "Noto Sans JP", sans-serif;
+$font-family-monospace: "Iosevka SS08", monospace;
 
 $presentation-heading-text-transform: "none";
+
+$code-block-font-size: 0.8em;

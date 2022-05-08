@@ -433,15 +433,51 @@
 </div>
 </div>
 </section>
+<section id="グラフィックデバイスの例" class="slide level2">
+<h2>グラフィックデバイスの例</h2>
+<ul>
+<li><p>ざっくり言えば、グラフィックデバイスを変えることで、PNG として出力したり、SVG として出力したり、いろいろ形式を変えられる</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>PNG</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># アクティブなデバイスを</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># PNG に変更。 これ以降の</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># 描画は PNG として出力</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"foo.png"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">plot</span>(airquality)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># デバイスを閉じる</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h3 id="section"></h3>
+</div><div class="column" style="width:50%;">
+<p>SVG</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># アクティブなデバイスを</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># SVG に変更。 これ以降の</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># 描画は SVG として出力</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">svg</span>(<span class="at">filename =</span> <span class="st">"foo.svg"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">plot</span>(airquality)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># デバイスを閉じる</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div></li>
+</ul>
+</section>
 <section id="グラフィックデバイスはつくれる" class="slide level2">
 <h2>グラフィックデバイスはつくれる</h2>
 <ul>
 <li><p>低レベルな関数は、<strong>Graphics Device API</strong>を通じてグラフィックデバイスに描画命令を伝える。</p></li>
-<li><p>つまり、Graphics Device APIを実装すればグラフィックデバイスがつくれる。例えば、</p>
+<li><p>つまり、Graphics Device APIを実装すればグラフィックデバイスがつくれる。例えば、以下のような変なデバイスも作れる。</p>
 <ul>
 <li><p>描画命令に応じてペンプロッターが動く</p></li>
 <li><p>描画命令を音に変換する</p></li>
-<li><p>描画命令をすべて無視してなにもしない</p></li>
+<li><p>描画命令をすべて無視してなにもしない（これは実際に存在する）</p></li>
 </ul></li>
 </ul>
 </section>
@@ -558,7 +594,7 @@
 <h2>wgpu</h2>
 <ul>
 <li><p>Firefox や Deno で使われている</p></li>
-<li><p>Rust gamedev 界隈を中心に Rust のエコシステムでよく使われていてコミュニティがしっかりしている</p>
+<li><p>単に Firefox の内部用というだけではなく、Rust gamedev 界隈を中心にしっかり Rust のユーザーコミュニティがある</p>
 <ul>
 <li><p><a href="https://github.com/bevyengine/bevy">bevy</a></p></li>
 <li><p><a href="https://github.com/nannou-org/nannou">nannou</a></p></li>
@@ -568,6 +604,20 @@
 <li><p><a href="https://github.com/BVE-Reborn/rend3">rend3</a></p></li>
 </ul></li>
 </ul>
+</section>
+<section id="参考wgpu-を学ぶには" class="slide level2">
+<h2>（参考）wgpu を学ぶには</h2>
+<p>Learn Wgpu: <a href="https://sotrh.github.io/learn-wgpu/" class="uri">https://sotrh.github.io/learn-wgpu/</a></p>
+
+<img data-src="images/learn-wgpu-screenshot.png" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="rust-と-r" class="title-slide slide level1 center">
+<h1>Rust と R</h1>
+
+</section>
+<section id="待ってr-から-rust-使えるの" class="slide level2">
+<h2>待って、R から Rust 使えるの…？</h2>
+<p>できますよ</p>
 </section>
 <section id="参考文献" class="slide level2">
 <h2>参考文献</h2>
