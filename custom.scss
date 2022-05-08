@@ -1,9 +1,13 @@
 /*-- scss:defaults --*/
 
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Noto+Sans+JP:wght@400;900&display=swap');
+
 // fonts
 $presentation-heading-font: "Noto Sans JP";
+$presentation-heading-font-weight: 900;
+
 $font-family-sans-serif: "Noto Sans JP", sans-serif;
-$font-family-monospace: "Iosevka SS08", monospace;
+$font-family-monospace: "Fira Code", monospace;
 
 $presentation-heading-text-transform: "none";
 

@@ -444,7 +444,7 @@
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># アクティブなデバイスを</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"># PNG に変更。 これ以降の</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co"># 描画は PNG として出力</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"foo.png"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"a.png"</span>)</span>
 <span id="cb3-5"><a href="#cb3-5"></a></span>
 <span id="cb3-6"><a href="#cb3-6"></a><span class="fu">plot</span>(airquality)</span>
 <span id="cb3-7"><a href="#cb3-7"></a></span>
@@ -458,7 +458,7 @@
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># アクティブなデバイスを</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co"># SVG に変更。 これ以降の</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co"># 描画は SVG として出力</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">svg</span>(<span class="at">filename =</span> <span class="st">"foo.svg"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">svg</span>(<span class="at">filename =</span> <span class="st">"a.svg"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5"></a></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="fu">plot</span>(airquality)</span>
 <span id="cb4-7"><a href="#cb4-7"></a></span>
@@ -538,7 +538,7 @@
 <li><p>「Web」とついているところから察せられるように、ウェブブラウザでの利用が想定されている。Chrome や Firefox にもすでに入っている（デフォルトでは無効）</p></li>
 <li><p>ただし、<strong>ウェブ用に設計されたからといってウェブ専用の API ではない</strong><sup>2</sup>（重要）</p></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p><a href="https://gpuweb.github.io/gpuweb/">WebGPU spec</a></p></li><li id="fn2" role="doc-endnote"><p>c.f. <a href="https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html">Point of WebGPU on native</a></p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p><a href="https://gpuweb.github.io/gpuweb/">WebGPU spec</a></p></li><li id="fn2" role="doc-endnote"><p><a href="https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html">Point of WebGPU on native</a></p></li></ol></aside></section>
 <section id="なぜ-webgpu-が必要なの" class="slide level2">
 <h2>なぜ WebGPU が必要なの？</h2>
 <ul>
@@ -606,27 +606,58 @@
 </ul>
 </section>
 <section id="参考wgpu-を学ぶには" class="slide level2">
-<h2>（参考）wgpu を学ぶには</h2>
+<h2>参考）wgpu を学ぶには</h2>
 <p>Learn Wgpu: <a href="https://sotrh.github.io/learn-wgpu/" class="uri">https://sotrh.github.io/learn-wgpu/</a></p>
 
-<img data-src="images/learn-wgpu-screenshot.png" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="images/learn-wgpu-screenshot.png" class="r-stretch quarto-figure-center"></section>
+<section id="ところで" class="slide level2">
+<h2>ところで…</h2>
+<p>Rust でグラフィックデバイスをつくったとして、</p>
+<ul>
+<li><p>どうやって R から Rust にアクセスするの？</p></li>
+<li><p>どうやって Rust から R にアクセスするの？</p></li>
+</ul>
+</section></section>
 <section>
 <section id="rust-と-r" class="title-slide slide level1 center">
 <h1>Rust と R</h1>
 
 </section>
-<section id="待ってr-から-rust-使えるの" class="slide level2">
-<h2>待って、R から Rust 使えるの…？</h2>
-<p>できますよ</p>
+<section id="rust-と-r-1" class="slide level2">
+<h2>Rust と R</h2>
+<ul>
+<li><p>R には C API がある</p></li>
+<li><p>Rust には FFI がある</p></li>
+</ul>
+<p>→ R の C API への Rust binding を rust-bindgen で生成していい感じにラップ</p>
 </section>
+<section id="いい感じにラップしたやつ-extendr" class="slide level2">
+<h2>いい感じにラップしたやつ: extendr</h2>
+<ul>
+<li><p>2020 年ごろから？開発</p></li>
+<li><p>Rust ぜんぜんわからないけどなぜかメンテナの1人をやっています…</p></li>
+</ul>
+
+<img data-src="images/extendr-logo-2col.svg" class="r-stretch quarto-figure-center"><p><a href="https://extendr.github.io/" class="uri">https://extendr.github.io/</a></p>
+</section>
+<section id="参考extendr-の使い方" class="slide level2">
+<h2>参考）extendr の使い方</h2>
+<p><a href="https://tokyor92-slides-rust-and-r.vercel.app/" class="uri">https://tokyor92-slides-rust-and-r.vercel.app/</a></p>
+
+<img data-src="images/extendr-tokyor92.png" class="r-stretch quarto-figure-center"></section>
 <section id="参考文献" class="slide level2">
 <h2>参考文献</h2>
+<ul>
+<li><p>Learn Wgpu: <a href="https://sotrh.github.io/learn-wgpu/" class="uri">https://sotrh.github.io/learn-wgpu/</a></p></li>
+<li><p>extendr: <a href="https://extendr.github.io/" class="uri">https://extendr.github.io/</a></p></li>
+</ul>
 </section>
 <section id="ライセンス" class="slide level2">
 <h2>ライセンス</h2>
 <ul>
 <li>dawn のロゴは Google によって作成され、CC-4.0-BY ライセンスで公開されています（ref: <a href="https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/" class="uri">https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/</a>）</li>
 <li>wgpu のロゴは gfx-rs developers によって作成され、MIT ライセンスで公開されています（ref: <a href="https://github.com/gfx-rs/wgpu/blob/master/logo.png" class="uri">https://github.com/gfx-rs/wgpu/blob/master/logo.png</a>）</li>
+<li>extendr のロゴは extendr developers によって作成され、CC-4.0-BY-SA ライセンスで公開されています（ref: <a href="https://github.com/extendr/artwork" class="uri">https://github.com/extendr/artwork</a>）</li>
 </ul>
 <div class="footer footer-default">
 

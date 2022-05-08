@@ -68,7 +68,7 @@ grid::grid.points(
     # アクティブなデバイスを
     # PNG に変更。 これ以降の
     # 描画は PNG として出力
-    png(filename = "foo.png")
+    png(filename = "a.png")
 
     plot(airquality)
 
@@ -88,7 +88,7 @@ grid::grid.points(
     # アクティブなデバイスを
     # SVG に変更。 これ以降の
     # 描画は SVG として出力
-    svg(filename = "foo.svg")
+    svg(filename = "a.svg")
 
     plot(airquality)
 
@@ -134,7 +134,7 @@ grid::grid.points(
 
 -   ただし、**ウェブ用に設計されたからといってウェブ専用の API ではない**[^2]（重要）
 
-[^2]: c.f. [Point of WebGPU on native](https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html)
+[^2]: [Point of WebGPU on native](https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html)
 
 ## なぜ WebGPU が必要なの？
 
@@ -204,21 +204,54 @@ grid::grid.points(
 
     -   [rend3](https://github.com/BVE-Reborn/rend3)
 
-## （参考）wgpu を学ぶには
+## 参考）wgpu を学ぶには
 
 Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 [![](images/learn-wgpu-screenshot.png){fig-align="center"}](https://sotrh.github.io/learn-wgpu/)
 
+## ところで...
+
+Rust でグラフィックデバイスをつくったとして、
+
+-   どうやって R から Rust にアクセスするの？
+
+-   どうやって Rust から R にアクセスするの？
+
 # Rust と R
 
-## 待って、R から Rust 使えるの...？
+## Rust と R
 
-できますよ
+-   R には C API がある
+
+-   Rust には FFI がある
+
+→ R の C API への Rust binding を rust-bindgen で生成していい感じにラップ
+
+## いい感じにラップしたやつ: extendr
+
+-   2020 年ごろから？開発
+
+-   Rust ぜんぜんわからないけどなぜかメンテナの1人をやっています...
+
+![](images/extendr-logo-2col.svg){fig-align="center"}
+
+<https://extendr.github.io/>
+
+## 参考）extendr の使い方
+
+<https://tokyor92-slides-rust-and-r.vercel.app/>
+
+[![](images/extendr-tokyor92.png)](https://tokyor92-slides-rust-and-r.vercel.app/)
 
 ## 参考文献
+
+-   Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
+
+-   extendr: <https://extendr.github.io/>
 
 ## ライセンス
 
 -   dawn のロゴは Google によって作成され、CC-4.0-BY ライセンスで公開されています（ref: <https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/>）
 -   wgpu のロゴは gfx-rs developers によって作成され、MIT ライセンスで公開されています（ref: <https://github.com/gfx-rs/wgpu/blob/master/logo.png>）
+-   extendr のロゴは extendr developers によって作成され、CC-4.0-BY-SA ライセンスで公開されています（ref: <https://github.com/extendr/artwork>）
