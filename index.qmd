@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![](images/icon.jpg){fig-align="center"}
 
-## グラフィックデバイスとは
+## グラフィックデバイスとは？
 
 -   Rでは、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、
 
@@ -75,3 +75,5 @@ grid::grid.points(
 | `metricInfo()`                          | テキストの幅と高さを返す                   |
 | `clip()`                                | 描画範囲を設定する                         |
 | `activate()`, `deactivate()`, `close()` | デバイスが開かれた時や閉じられた時のフック |
+
+## WebGPU とは？
