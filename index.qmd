@@ -108,6 +108,8 @@ grid::grid.points(
 
 -   セキュリティや安定性
 
+-   （個人的な感想）Vulkan のコードはめちゃくちゃ長くなりがちでつらい
+
 -   （あとは政治的な理由もありそう）
 
 ## WebGL / OpenGL でよくない？
@@ -139,6 +141,24 @@ grid::grid.points(
 ![](images/wgpu-logo.png){fig-align="center" width="312"}
 :::
 :::
+
+## wgpu
+
+-   Firefox や Deno で使われている
+
+-   Rust gamedev 界隈を中心に Rust のエコシステムでよく使われていてコミュニティがしっかりしている
+
+    -   [bevy](https://github.com/bevyengine/bevy)
+
+    -   [nannou](https://github.com/nannou-org/nannou)
+
+    -   [graphite](https://graphite.rs/)
+
+    -   [rust-gpu](https://github.com/EmbarkStudios/rust-gpu)
+
+    -   [Veloren](https://veloren.net/)
+
+    -   [rend3](https://github.com/BVE-Reborn/rend3)
 
 ## 参考文献
 
