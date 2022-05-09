@@ -16,13 +16,24 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## ドーモ！
 
+::: columns
+::: {.column width="50%"}
 ![](images/icon.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   普段は wiki と SQL を書く仕事をしています
+-   趣味で[家電を電子楽器に改造する団体](https://www.electronicosfantasticos.com/)に入っています
+-   [ggplot2](https://github.com/tidyverse/ggplot2)、[conflr](https://github.com/line/conflr) のメンテナをしています
+-   好きな言語：R、忍殺語
+:::
+:::
 
 # グラフィックデバイスとは？
 
 ## グラフィックデバイスとは？
 
--   Rでは、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、
+-   R では、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、
 
     -   データを渡せばいい感じにグラフを描いてくれる高レベルな関数（例：`plot()` ）
 
@@ -58,45 +69,49 @@ grid::grid.points(
 
 -   ざっくり言えば、グラフィックデバイスを変えることで、PNG として出力したり、SVG として出力したり、いろいろ形式を変えられる
 
-    ::: columns
-    ::: {.column width="50%"}
-    PNG
+::: columns
+::: {.column width="50%"}
+PNG
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
 
-    # アクティブなデバイスを
-    # PNG に変更。 これ以降の
-    # 描画は PNG として出力
-    png(filename = "a.png")
+# アクティブなデバイスを
+# PNG に変更。 これ以降の
+# 描画は PNG として出力
+png(filename = "a.png")
 
-    plot(airquality)
+plot(airquality)
 
-    # デバイスを閉じる
-    dev.off()
-    ```
+# デバイスを閉じる
+dev.off()
+```
 
-    ### 
-    :::
+### 
+:::
 
-    ::: {.column width="50%"}
-    SVG
+::: {.column width="50%"}
+SVG
 
-    ```{r}
-    #| eval: false
+```{r}
+#| eval: false
 
-    # アクティブなデバイスを
-    # SVG に変更。 これ以降の
-    # 描画は SVG として出力
-    svg(filename = "a.svg")
+# アクティブなデバイスを
+# SVG に変更。 これ以降の
+# 描画は SVG として出力
+svg(filename = "a.svg")
 
-    plot(airquality)
+plot(airquality)
 
-    # デバイスを閉じる
-    dev.off()
-    ```
-    :::
-    :::
+# デバイスを閉じる
+dev.off()
+```
+:::
+:::
+
+## 図
+
+![](images/zu0.png){fig-align="center"}
 
 ## グラフィックデバイスはつくれる
 
@@ -141,14 +156,14 @@ grid::grid.points(
 -   GPU を使うためのグラフィックス API はすでに様々あるが、プラットフォームごとに使える API が違い、それぞれに対応しようと思うと実装コストが大変なので、抽象化されたレイヤーが必要
     -   Windows: Direct3D 12, Direct3D 11, Vulkan
 
-    -   macOS: Metal, MoltenVK (Vulkan)
+    -   macOS: Metal (, MoltenVK)
 
     -   Linux: Vulkan
 -   あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある
 
-## イメージ図
+## 図
 
-!\[いい感じのイメージ図がここに入るかもしれない\](images/iikanji.gif)
+![](images/zu1.png){fig-align="center"}
 
 ## Vulkan でよくない？
 
@@ -238,6 +253,10 @@ Rust でグラフィックデバイスをつくったとして、
 
 → R の C API への Rust binding を rust-bindgen で生成していい感じにラップ
 
+## 図
+
+![](images/zu2.png){fig-align="center"}
+
 ## いい感じにラップしたやつ: extendr
 
 -   2020 年ごろから？開発
@@ -253,10 +272,6 @@ Rust でグラフィックデバイスをつくったとして、
 <https://tokyor92-slides-rust-and-r.vercel.app/>
 
 [![](images/extendr-tokyor92.png)](https://tokyor92-slides-rust-and-r.vercel.app/)
-
-## イメージ図
-
-!\[いい感じのイメージ図がここに入ったらうれしい\](images/iikanji.gif)
 
 # グラフィックデバイスを実装する
 
@@ -319,7 +334,7 @@ fn sd_circle(
 ## 今回の実装
 
 | API        | 実装方式     | 理由                                                             |
-|------------|--------------|------------------------------------------------------------------|
+|----------------|----------------|-----------------------------------------|
 | `line()`   | tessellation |                                                                  |
 | `circle()` | SDF          | 円はプロットで最もよく使われる図形のひとつ。なるべく軽くするため |
 | `rect()`   | tessellation |                                                                  |
@@ -401,7 +416,7 @@ fn fs_main(
 
 ## レポジトリ
 
-* <https://github.com/yutannihilation/wgpugd>
+-   <https://github.com/yutannihilation/wgpugd>
 
 ## つらかったところ、課題など
 
@@ -413,7 +428,6 @@ fn fs_main(
 ## 感想
 
 -   なんとなく、GPU のパワーで爆速！、と思ってたけど、二次元の画像を1枚生成するだけなら CPU の方が速かった。tessellation や GPU とデータをやりとりするためのバッファの準備など、事前のコストがけっこう大きい。（単に私の実装がしょぼいだけ、という可能性もかなりあります）
-
 
 ## 参考文献
 

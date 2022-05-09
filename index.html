@@ -389,8 +389,23 @@
 
 <section id="ドーモ" class="slide level2">
 <h2>ドーモ！</h2>
-
-<img data-src="images/icon.jpg" class="r-stretch quarto-figure-center"></section>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/icon.jpg"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>普段は wiki と SQL を書く仕事をしています</li>
+<li>趣味で<a href="https://www.electronicosfantasticos.com/">家電を電子楽器に改造する団体</a>に入っています</li>
+<li><a href="https://github.com/tidyverse/ggplot2">ggplot2</a>、<a href="https://github.com/line/conflr">conflr</a> のメンテナをしています</li>
+<li>好きな言語：R、忍殺語</li>
+</ul>
+</div>
+</div>
+</section>
 <section>
 <section id="グラフィックデバイスとは" class="title-slide slide level1 center">
 <h1>グラフィックデバイスとは？</h1>
@@ -399,7 +414,7 @@
 <section id="グラフィックデバイスとは-1" class="slide level2">
 <h2>グラフィックデバイスとは？</h2>
 <ul>
-<li><p>Rでは、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、</p>
+<li><p>R では、標準ライブラリでグラフィックス関連の機能も提供されている。具体的には、</p>
 <ul>
 <li><p>データを渡せばいい感じにグラフを描いてくれる高レベルな関数（例：<code>plot()</code> ）</p></li>
 <li><p>高レベルな関数の下で動いている、「線を描く」「四角を描く」みたいな低レベルな関数（例： <code>grid.lines()</code>）</p></li>
@@ -436,7 +451,8 @@
 <section id="グラフィックデバイスの例" class="slide level2">
 <h2>グラフィックデバイスの例</h2>
 <ul>
-<li><p>ざっくり言えば、グラフィックデバイスを変えることで、PNG として出力したり、SVG として出力したり、いろいろ形式を変えられる</p>
+<li>ざっくり言えば、グラフィックデバイスを変えることで、PNG として出力したり、SVG として出力したり、いろいろ形式を変えられる</li>
+</ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>PNG</p>
@@ -466,9 +482,12 @@
 <span id="cb4-9"><a href="#cb4-9"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-</div></li>
-</ul>
+</div>
 </section>
+<section id="図" class="slide level2">
+<h2>図</h2>
+
+<img data-src="images/zu0.png" class="r-stretch quarto-figure-center"></section>
 <section id="グラフィックデバイスはつくれる" class="slide level2">
 <h2>グラフィックデバイスはつくれる</h2>
 <ul>
@@ -545,16 +564,16 @@
 <li>GPU を使うためのグラフィックス API はすでに様々あるが、プラットフォームごとに使える API が違い、それぞれに対応しようと思うと実装コストが大変なので、抽象化されたレイヤーが必要
 <ul>
 <li><p>Windows: Direct3D 12, Direct3D 11, Vulkan</p></li>
-<li><p>macOS: Metal, MoltenVK (Vulkan)</p></li>
+<li><p>macOS: Metal (, MoltenVK)</p></li>
 <li><p>Linux: Vulkan</p></li>
 </ul></li>
 <li>あと、ウェブブラウザで実行するという視点から、セキュリティや安定性を脅かすようなことはできないようにする必要がある</li>
 </ul>
 </section>
-<section id="イメージ図" class="slide level2">
-<h2>イメージ図</h2>
-<p>![いい感じのイメージ図がここに入るかもしれない](images/iikanji.gif)</p>
-</section>
+<section id="図-1" class="slide level2">
+<h2>図</h2>
+
+<img data-src="images/zu1.png" class="r-stretch quarto-figure-center"></section>
 <section id="vulkan-でよくない" class="slide level2">
 <h2>Vulkan でよくない？</h2>
 <ul>
@@ -642,6 +661,10 @@
 </ul>
 <p>→ R の C API への Rust binding を rust-bindgen で生成していい感じにラップ</p>
 </section>
+<section id="図-2" class="slide level2">
+<h2>図</h2>
+
+<img data-src="images/zu2.png" class="r-stretch quarto-figure-center"></section>
 <section id="いい感じにラップしたやつ-extendr" class="slide level2">
 <h2>いい感じにラップしたやつ: extendr</h2>
 <ul>
@@ -655,11 +678,7 @@
 <h2>参考）extendr の使い方</h2>
 <p><a href="https://tokyor92-slides-rust-and-r.vercel.app/" class="uri">https://tokyor92-slides-rust-and-r.vercel.app/</a></p>
 
-<img data-src="images/extendr-tokyor92.png" class="r-stretch quarto-figure-center"></section>
-<section id="イメージ図-1" class="slide level2">
-<h2>イメージ図</h2>
-<p>![いい感じのイメージ図がここに入ったらうれしい](images/iikanji.gif)</p>
-</section></section>
+<img data-src="images/extendr-tokyor92.png" class="r-stretch quarto-figure-center"></section></section>
 <section>
 <section id="グラフィックデバイスを実装する" class="title-slide slide level1 center">
 <h1>グラフィックデバイスを実装する</h1>
@@ -722,9 +741,9 @@
 <h2>今回の実装</h2>
 <table>
 <colgroup>
-<col style="width: 13%">
-<col style="width: 15%">
-<col style="width: 71%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 56%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -767,7 +786,7 @@
 </tbody>
 </table>
 </section>
-<section id="イメージ図-2" class="slide level2">
+<section id="イメージ図" class="slide level2">
 <h2>イメージ図</h2>
 <p>![いい感じのイメージ図がここに入る未来が見える](images/iikanji.gif)</p>
 </section>
