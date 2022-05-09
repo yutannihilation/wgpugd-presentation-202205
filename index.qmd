@@ -147,7 +147,7 @@ dev.off()
 
 -   「Web」とついているところから察せられるように、ウェブブラウザでの利用が想定されている。Chrome や Firefox にもすでに入っている（デフォルトでは無効）
 
--   ただし、**ウェブ用に設計されたからといってウェブ専用の API ではない**[^2]（重要）
+-   ただし、**ウェブ用に設計されたからといってウェブでしか使っていけないわけではない**[^2]（重要）
 
 [^2]: [Point of WebGPU on native](https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html)
 
