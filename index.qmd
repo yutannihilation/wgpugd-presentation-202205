@@ -342,9 +342,9 @@ fn sd_circle(
 | `raster()` | （未実装）   |                                                                  |
 | ...        |              |                                                                  |
 
-## イメージ図
+## 図
 
-!\[いい感じのイメージ図がここに入る未来が見える\](images/iikanji.gif)
+![](images/zu3.png){fig-align="center"}
 
 ## 結果
 
@@ -352,13 +352,13 @@ fn sd_circle(
 
 ![](images/normal.png){fig-align="center"}
 
-## おもしろシェーダー芸
+## おもしろポストエフェクト
 
-色を反転
+色を反転（そんなに面白くない）
 
 ![](images/nega.png){fig-align="center"}
 
-## おもしろシェーダー芸
+## おもしろポストエフェクト
 
 ブラウン管ディスプレイエフェクト（[Babylon.js のブログ記事](https://babylonjs.medium.com/retro-crt-shader-a-post-processing-effect-study-1cb3f783afbc)を元に実装）
 
