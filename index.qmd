@@ -6,7 +6,6 @@ author: "@yutannihilation"
 format:
   revealjs:
     theme: ["solarized", "custom.scss"]
-  pptx: {}
 ---
 
 ```{r setup}
