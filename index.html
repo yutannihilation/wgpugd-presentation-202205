@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="quarto-0.9.330">
 
-  <meta name="author" content="Hiroaki Yutani">
+  <meta name="author" content="@yutannihilation">
   <title>Rust と WebGPU で   R のグラフィックデバイスをつくる</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -384,7 +384,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title"><p>Rust と WebGPU で <br> R のグラフィックデバイスをつくる</p></h1>
-  <p class="author">Hiroaki Yutani</p>
+  <p class="author"><span class="citation" data-cites="yutannihilation">@yutannihilation</span></p>
 </section>
 
 <section id="ドーモ" class="slide level2">
@@ -397,11 +397,11 @@
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
+<p>Hiroaki Yutani</p>
 <ul>
-<li>普段は wiki と SQL を書く仕事をしています</li>
-<li>趣味で<a href="https://www.electronicosfantasticos.com/">家電を電子楽器に改造する団体</a>に入っています</li>
-<li><a href="https://github.com/tidyverse/ggplot2">ggplot2</a>、<a href="https://github.com/line/conflr">conflr</a> のメンテナをしています</li>
+<li>Twitter: <a href="https://twitter.com/yutannihilation"><span class="citation" data-cites="yutannihilation">@yutannihilation</span></a></li>
 <li>好きな言語：R、忍殺語</li>
+<li>R関連のリリースノートを眺めてみる、という<a href="https://www.youtube.com/channel/UCDHzgi5BGU5F-LXxQIIOyDw">ニッチな YouTube チャンネル</a>やってます</li>
 </ul>
 </div>
 </div>
@@ -636,8 +636,8 @@
 <section id="なぜ-webgpu-で-r-のグラフィックデバイスをつくりたいのか" class="slide level2">
 <h2>なぜ WebGPU で R のグラフィックデバイスをつくりたいのか？</h2>
 <ul>
-<li><p>おもしろポストエフェクトをかけたりして shader 芸で遊びたい</p></li>
-<li><p>グラフィックデバイスの実装に OS 間で差があり、Windows で使えるいい感じのインタラクティブなグラフィックデバイスがない</p></li>
+<li><p>WebGPU は、実際に GPU 上で描画する処理を shader (WGSL) で書くことになる。逆に言うと shader でいろいろ遊べるので、おもしろポストエフェクトとかかけて遊びたい。</p></li>
+<li><p>（実用的な理由）Windows でも使えるいい感じのインタラクティブなグラフィックデバイスがない</p></li>
 </ul>
 </section>
 <section id="ところで" class="slide level2">

@@ -2,7 +2,7 @@
 title: |
   Rust と WebGPU で <br/>
   R のグラフィックデバイスをつくる
-author: "Hiroaki Yutani"
+author: "@yutannihilation"
 format:
   revealjs:
     theme: ["solarized", "custom.scss"]
@@ -22,10 +22,13 @@ knitr::opts_chunk$set(echo = TRUE)
 :::
 
 ::: {.column width="50%"}
--   普段は wiki と SQL を書く仕事をしています
--   趣味で[家電を電子楽器に改造する団体](https://www.electronicosfantasticos.com/)に入っています
--   [ggplot2](https://github.com/tidyverse/ggplot2)、[conflr](https://github.com/line/conflr) のメンテナをしています
+
+Hiroaki Yutani
+
+-   Twitter: [@yutannihilation](https://twitter.com/yutannihilation)
 -   好きな言語：R、忍殺語
+-   R関連のリリースノートを眺めてみる、という[ニッチな YouTube チャンネル](https://www.youtube.com/channel/UCDHzgi5BGU5F-LXxQIIOyDw)やってます
+
 :::
 :::
 
@@ -231,9 +234,9 @@ Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 ## なぜ WebGPU で R のグラフィックデバイスをつくりたいのか？
 
--   おもしろポストエフェクトをかけたりして shader 芸で遊びたい
+-   WebGPU は、実際に GPU 上で描画する処理を shader (WGSL) で書くことになる。逆に言うと shader でいろいろ遊べるので、おもしろポストエフェクトとかかけて遊びたい。
 
--   グラフィックデバイスの実装に OS 間で差があり、Windows で使えるいい感じのインタラクティブなグラフィックデバイスがない
+-   （実用的な理由）Windows でも使えるいい感じのインタラクティブなグラフィックデバイスがない
 
 ## ところで...
 
