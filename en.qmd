@@ -341,13 +341,13 @@ It works!
 
 ![](images/normal.png){fig-align="center"}
 
-## A (not so) funcy post effect
+## A (not so) fancy post effect
 
 Invert colors
 
 ![](images/nega.png){fig-align="center"}
 
-## A funcy post effect
+## A fancy post effect
 
 Retro CRT monitor effect (based on [a blog post by Babylon.js](https://babylonjs.medium.com/retro-crt-shader-a-post-processing-effect-study-1cb3f783afbc)）
 
