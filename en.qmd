@@ -1,0 +1,432 @@
+---
+title: |
+  A WebGPU <br/>
+  Graphics Device <br/>
+  for R
+author: "@yutannihilat_en"
+format:
+  revealjs:
+    theme: ["solarized", "custom.scss"]
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+# What Is <br/>"Graphics Device"?
+
+## What is "Graphics Device"?
+
+-   R's standard library provides graphics-related functionalities:
+
+    -   High-level functions (e.g. `plot()`) that draw nice plot automagically.
+
+    -   Low level functions that work behind high-level ones (e.g. `grid.lines()`); they does very primitive operations like drawing a line or a rectangle.
+
+-   Graphics devices is the layer that actually executes those low-level operations.
+
+------------------------------------------------------------------------
+
+::: columns
+::: {.column width="50%"}
+High-level
+
+```{r}
+plot(airquality)
+```
+:::
+
+::: {.column width="50%"}
+Low-level
+
+```{r}
+grid::grid.points(
+  x = c(0.3, 0.8),
+  y = c(0.4, 0.2),
+  default.units = "npc"
+)
+```
+:::
+:::
+
+## Examples of how to use graphics devices
+
+-   To put simply, we can change the output (e.g. PNG, SVG) by changing the graphics device
+
+::: columns
+::: {.column width="50%"}
+Output a PNG file
+
+```{r}
+#| eval: false
+
+png(filename = "a.png")
+
+plot(airquality)
+
+dev.off()
+```
+
+### 
+:::
+
+::: {.column width="50%"}
+Output an SVG file
+
+```{r}
+#| eval: false
+
+svg(filename = "a.svg")
+
+plot(airquality)
+
+dev.off()
+```
+:::
+:::
+
+## Figure
+
+![](images/zu0.png){fig-align="center"}
+
+## Want your own graphics device? Implement it!
+
+-   The operations are translated via **Graphics Device API**
+
+-   We can create a graphics device by implementing the Graphics Device API. For example...
+
+    -   A device that drives pen-plotter
+
+    -   A device that translate the drawing operations into sounds
+
+    -   A device that ignores all the operations (null device)
+
+## Examples of Graphics Device API
+
+|                                         |                                                          |
+|-----------------------------------|-------------------------------------|
+| `circle()`                              | Draw a circle                                            |
+| `rect()`                                | Draw a rectangle                                         |
+| `line()`                                | Draw a line                                              |
+| `text()` , `textUTF8()`                 | Draw a text                                              |
+| `metricInfo()`                          | Return the width and height of the text                  |
+| `clip()`                                | Set the clipping range                                   |
+| `activate()`, `deactivate()`, `close()` | Hooks that are called when a device is opened or closed. |
+
+# What Is WebGPU?
+
+## What is WebGPU?
+
+> WebGPU exposes an API for performing operations, such as rendering and computation, on a Graphics Processing Unit. (ref: [WebGPU spec](https://gpuweb.github.io/gpuweb/))
+
+-   As the word "Web" indicates, it's designed for web browsers.
+
+-   But, it doesn't mean it's *only* for the Web[^1]
+
+[^1]: [Point of WebGPU on native](https://kvark.github.io/web/gpu/native/2020/05/03/point-of-webgpu-native.html)
+
+## Why WebGPU? (1) Portability
+
+-   There already exist several graphics API that utilizes GPU. However, different APIs are required for different platforms / OSes.
+
+    | OS      | Graphics API                |
+    |---------|-----------------------------|
+    | Windows | Direct3D 12 (or 11), Vulkan |
+    | macOS   | Metal (, MoltenVK)          |
+    | Linux   | Vulkan                      |
+
+-   So, we need another abstraction layer over them.
+
+## 図
+
+![](images/zu1.png){fig-align="center"}
+
+## Why WebGPU? (2) Security
+
+*(This point is less important in the context of implementing R's graphics device)*
+
+-   Considering the usage on web browsers, the API should be safe. The API should protect users from problems like malicious attacks and unexpected crashes.
+
+-   In terms of this, the native APIs are too raw.
+
+## Isn't Vulkan enough for it?
+
+-   Not portable enough
+
+    -   Old devices
+
+    -   macOS / iOS[^2]
+
+-   The APIs are too raw
+
+    -   Security (see the last slide)
+
+    -   (IMHO) the code using Vulkan is lengthy
+
+[^2]: MoltenVK is for macOS / iOS
+
+## Isn't WebGL or OpenGL enough for it?
+
+-   -GL APIs are great in portability (actually WebGPU implementation uses OpenGL ES for the backend for platforms like embedded devices)
+
+-   However, -GL APIs' design is not in line with modern GPU architectures, which causes computational and mental overhead [^3]
+
+[^3]: [WebGPU --- All of the cores, none of the canvas](https://surma.dev/things/webgpu/)
+
+## Major WebGPU implementations
+
+::: columns
+::: {.column width="50%"}
+### Dawn (C++)
+
+-   Google
+
+![](images/dawn-logo.svg){width="400"}
+:::
+
+::: {.column width="50%"}
+### wgpu (Rust)
+
+-   Mozilla
+
+![](images/wgpu-logo.png){fig-align="center" width="312"}
+:::
+:::
+
+## wgpu
+
+-   Used in Firefox and Deno
+
+-   This isn't just an internal component of Firefox, but is popularly used for various usages around Rust gamedev people:
+
+    -   [bevy](https://github.com/bevyengine/bevy)
+
+    -   [nannou](https://github.com/nannou-org/nannou)
+
+    -   [graphite](https://graphite.rs/)
+
+    -   [rust-gpu](https://github.com/EmbarkStudios/rust-gpu)
+
+    -   [Veloren](https://veloren.net/)
+
+    -   [rend3](https://github.com/BVE-Reborn/rend3)
+
+## Learn Wgpu
+
+Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
+
+[![](images/learn-wgpu-screenshot.png){fig-align="center"}](https://sotrh.github.io/learn-wgpu/)
+
+## But.., why WebGPU for a graphics device for R?
+
+-   Why not! I want a graphics device that can be messed up with shader magics (e.g. post effects)
+
+-   One serious reason is that there's no an interactive graphics device that's available on all of macOS, Linux, and Windows[^4]
+
+[^4]: <https://twitter.com/yutannihilat_en/status/1522204972280324097>
+
+## Btw,
+
+-   How can R call the Rust-implemented graphics device?
+
+-   How can the Rust-implementation access to data contained by R?
+
+# extendr {background-image="images/extendr-logo-2col.svg" background-opacity="0.3"}
+
+## Communication between Rust and R
+
+-   R has the C API
+
+-   Rust can use FFI
+
+→ Generate a Rust bindings for R's C API by rust-bindgen, and wrap it nicely
+
+## Figure
+
+![](images/zu2.png){fig-align="center"}
+
+## extendr
+
+-   "A safe and user friendly R extension interface using Rust"
+
+-   Developed since 2020
+
+-   (Although I know almost nothing about Rust, I'm one of the maintainers...)
+
+![](images/extendr-logo-2col.svg){fig-align="center"}
+
+<https://extendr.github.io/>
+
+## Using Rust code in R packages
+
+<https://extendr.github.io/rextendr/articles/package.html>
+
+[![](images/rextendr-vignette.png)](https://extendr.github.io/rextendr/articles/package.html)
+
+# Implement A Graphics Device
+
+## How to draw shapes on GPU
+
+1.  Convert the shape into the mesh of triangles (**tessellation**)
+2.  Find or invent a **signed distance function (SDF)** that represents the shape
+3.  Rasterize the shape and treat it as **texture**
+
+## Tessellation
+
+-   GPU can draw only triangles, so we need to chop up the shape into triangles on CPU
+-   In Rust, [lyon](https://github.com/nical/lyon) is the popular crate for this
+
+::: columns
+::: {.column width="50%"}
+![](images/untessellated_R.png){width="400"}
+:::
+
+::: {.column width="50%"}
+![](images/tessellated_R.png){width="400"}
+:::
+:::
+
+## SDF
+
+-   A function that returns the distance from the outline of the shape. GPU can use this to determine whether the location is inside or outside of the shape (i.e. the pixel is drawn)
+
+::: columns
+::: {.column width="60%"}
+``` rust
+fn sd_circle(
+  p: vec2<f32>,
+  r: f32
+) -> f32 {
+  return length(p) - r;
+}
+```
+:::
+
+::: {.column width="40%"}
+![](images/sdf_circle.png)
+:::
+:::
+
+## A list of popular 2D SDF functions
+
+<https://iquilezles.org/articles/distfunctions2d/>
+
+![](images/iq_scresnshot.png){fig-align="center"}
+
+## Rasterization
+
+-   (Not implement yet)
+
+-   In my implementation, texts are rendered with tessallation, but it can be with rasterization.
+
+## Current implementation
+
+| API        | Implementation        | Reason                                                                           |
+|------------------|------------------|------------------------------------|
+| `line()`   | tessellation          |                                                                                  |
+| `circle()` | SDF                   | A circle is drawn repeatedly (e.g. scatterplot), so SDF should be more efficient |
+| `rect()`   | tessellation          |                                                                                  |
+| `text()`   | tessellation          | SDF font might be more efficient, but I don't know how to implement it...        |
+| `raster()` | (not implemented yet) |                                                                                  |
+| ...        |                       |                                                                                  |
+
+## Figure
+
+![](images/zu3.png){fig-align="center"}
+
+## Result
+
+It works!
+
+![](images/normal.png){fig-align="center"}
+
+## A (not so) funcy post effect
+
+Invert colors
+
+![](images/nega.png){fig-align="center"}
+
+## A funcy post effect
+
+Retro CRT monitor effect (based on [a blog post by Babylon.js](https://babylonjs.medium.com/retro-crt-shader-a-post-processing-effect-study-1cb3f783afbc)）
+
+![](images/shader.png){fig-align="center"}
+
+## WGSL code for Retro CRT monitor effect
+
+``` {.rust style="font-size: 0.6em"}
+let CURVATURE: vec2<f32> = vec2<f32>(3.0, 3.0);
+let RESOLUTION: vec2<f32> = vec2<f32>(100.0, 100.0);
+let BRIGHTNESS: f32 = 4.0;
+
+let PI: f32 = 3.14159;
+
+fn curveRemapUV(uv_in: vec2<f32>) -> vec2<f32> {
+    var uv_out: vec2<f32>;
+
+    // as we near the edge of our screen apply greater distortion using a cubic function
+    uv_out = uv_in * 2.0 - 1.0;
+    var offset: vec2<f32> = abs(uv_out.yx) / CURVATURE;
+
+    uv_out = uv_out + uv_out * offset * offset;
+    return uv_out * 0.5 + 0.5;
+}
+
+fn scanLineIntensity(uv_in: f32, resolution: f32, opacity: f32) -> vec4<f32> {
+     var intensity: f32 = sin(uv_in * resolution * PI * 2.0);
+     intensity = ((0.5 * intensity) + 0.5) * 0.9 + 0.1;
+     return vec4<f32>(vec3<f32>(pow(intensity, opacity)), 1.0);
+ }
+
+fn vignetteIntensity(uv_in: vec2<f32>, resolution: vec2<f32>, opacity: f32, roundness: f32) -> vec4<f32> {
+    var intensity: f32 = uv_in.x * uv_in.y * (1.0 - uv_in.x) * (1.0 - uv_in.y);
+    return vec4<f32>(vec3<f32>(clamp(pow((resolution.x / roundness) * intensity, opacity), 0.0, 1.0)), 1.0);
+}
+
+@vertex
+...snip...
+
+@fragment
+fn fs_main(
+    vs_out: VertexOutput
+) -> @location(0) vec4<f32> {
+    var remapped_tex_coords = curveRemapUV(vs_out.tex_coords);
+    var color: vec4<f32> = textureSample(r_texture, r_sampler, remapped_tex_coords);
+    
+    color *= vignetteIntensity(remapped_tex_coords, RESOLUTION, 1.0, 2.0);
+    
+    color *= scanLineIntensity(remapped_tex_coords.x, RESOLUTION.y, 1.0);
+    color *= scanLineIntensity(remapped_tex_coords.y, RESOLUTION.x, 1.0);
+    
+    return vec4<f32>(color.rgb * BRIGHTNESS, 1.0);
+}
+```
+
+## Repository
+
+-   <https://github.com/yutannihilation/wgpugd>
+
+## Remaining issues
+
+-   If Rust panics, the R session crashes immediately so it's hard to debug. I need to decouple the implementation from R-related codes.
+
+-   Interface to accept shader code from users. Currently I have no idea how to express the operations that needs to be applied repeatedly (e.g. bloom effect)
+
+## Lessons learned
+
+-   I thought the device is super fast because it utilizes GPU. But, in reality, there are many overhead for preparation (e.g. tessallate the shape, allocate buffers to communicate data between GPU and CPU) before GPU actually works. To draw only a few plots, CPU wins.
+
+## References
+
+-   Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
+
+-   extendr: <https://extendr.github.io/>
+
+## Licenses
+
+-   The dawn logo by Google is licensed under CC-4.0-BY (ref: <https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/>)
+-   The wgpu logo by gfx-rs developers is licensed under MIT (ref: <https://github.com/gfx-rs/wgpu/blob/master/logo.png>)
+-   The extendr logo by extendr developers is licensed under CC-4.0-BY-SA (ref: <https://github.com/extendr/artwork>)

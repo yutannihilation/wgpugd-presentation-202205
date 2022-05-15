@@ -1,3 +1,7 @@
+-   English: <https://yutannihilation.github.io/wgpugd-presentation-202205/en.html>
+
+-   日本語: <https://yutannihilation.github.io/wgpugd-presentation-202205/>
+
 # Licenses
 
 -   [The Dawn logo](https://dawn.googlesource.com/dawn/+/HEAD/docs/imgs/) by Google is licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
