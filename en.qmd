@@ -88,7 +88,7 @@ dev.off()
 
 ## Figure
 
-![](images/zu0.png){fig-align="center"}
+![](images/zu0_en.png){fig-align="center"}
 
 ## Want your own graphics device? Implement it!
 
@@ -140,7 +140,7 @@ dev.off()
 
 ## Figure
 
-![](images/zu1.png){fig-align="center"}
+![](images/zu1_en.png){fig-align="center"}
 
 ## Why WebGPU? (2) Security
 
@@ -249,7 +249,7 @@ Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 ## Figure
 
-![](images/zu2.png){fig-align="center"}
+![](images/zu2_en.png){fig-align="center"}
 
 ## extendr
 
@@ -338,7 +338,7 @@ fn sd_circle(
 
 ## Figure
 
-![](images/zu3.png){fig-align="center"}
+![](images/zu3_en.png){fig-align="center"}
 
 ## Result
 
