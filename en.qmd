@@ -14,8 +14,6 @@ format:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 
-
 # What Is <br/>"Graphics Device"?
 
 ## What is "Graphics Device"?
@@ -166,7 +164,7 @@ dev.off()
 
     -   (IMHO) the code using Vulkan is lengthy
 
-[^2]: MoltenVK is for macOS / iOS
+[^2]: MoltenVK is for macOS / iOS. It should work to some extent, but I don't know well about this topic, sorry...
 
 ## Isn't WebGL or OpenGL enough for it?
 
