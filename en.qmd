@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
     -   Low level functions that work behind high-level ones (e.g. `grid.lines()`); they does very primitive operations like drawing a line or a rectangle.
 
--   Graphics devices is the layer that actually executes those low-level operations.
+-   Graphics device is the layer that actually executes those low-level operations.
 
 ------------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ dev.off()
 
 ## Why WebGPU? (1) Portability
 
--   There already exist several graphics API that utilizes GPU. However, different APIs are required for different platforms / OSes.
+-   There already exist several graphics APIs that utilize GPU. However, different APIs are required for different platforms / OSes.
 
     | OS      | Graphics API                |
     |---------|-----------------------------|
@@ -235,7 +235,7 @@ Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 -   How can R call the Rust-implemented graphics device?
 
--   How can the Rust-implementation access to data contained by R?
+-   How can the Rust-implementation access data contained by R?
 
 # extendr {background-image="images/extendr-logo-2col.svg" background-opacity="0.3"}
 
