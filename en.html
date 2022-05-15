@@ -556,8 +556,8 @@
 <li><p>So, we need another abstraction layer over them.</p></li>
 </ul>
 </section>
-<section id="図" class="slide level2">
-<h2>図</h2>
+<section id="figure-1" class="slide level2">
+<h2>Figure</h2>
 
 <img data-src="images/zu1.png" class="r-stretch quarto-figure-center"></section>
 <section id="why-webgpu-2-security" class="slide level2">
@@ -579,39 +579,40 @@
 <li><p>The APIs are too raw</p>
 <ul>
 <li><p>Security (see the last slide)</p></li>
-<li><p>(IMHO) the code using Vulkan is lengthy</p></li>
+<li><p>(IMHO) the code using Vulkan tends to be lengthy</p></li>
 </ul></li>
+<li><p>Other problems like <a href="https://kvark.github.io/spirv/2021/05/01/spirv-horrors.html">this</a> and <a href="https://kvark.github.io/3d/api/vulkan/2021/06/20/vulkan-alignment.html">this</a></p></li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn2" role="doc-endnote"><p>MoltenVK is for macOS / iOS. It should work to some extent, but I don’t know well about this topic, sorry…</p></li></ol></aside></section>
 <section id="isnt-webgl-or-opengl-enough-for-it" class="slide level2">
 <h2>Isn’t WebGL or OpenGL enough for it?</h2>
 <ul>
-<li><p>-GL APIs are great in portability (actually WebGPU implementation uses OpenGL ES for the backend for platforms like embedded devices)</p></li>
+<li><p>-GL APIs are great in portability (actually WebGPU implementations use OpenGL ES as one of the backends)</p></li>
 <li><p>However, -GL APIs’ design is not in line with modern GPU architectures, which causes computational and mental overhead <sup>1</sup></p></li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn3" role="doc-endnote"><p><a href="https://surma.dev/things/webgpu/">WebGPU — All of the cores, none of the canvas</a></p></li></ol></aside></section>
-<section id="major-webgpu-implementations" class="slide level2">
-<h2>Major WebGPU implementations</h2>
+<section id="webgpu-implementations" class="slide level2">
+<h2>WebGPU implementations</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="dawn-c">Dawn (C++)</h3>
 <ul>
 <li>Google</li>
 </ul>
-<p><img data-src="images/dawn-logo.svg" width="400"></p>
+<p><img data-src="images/dawn-logo.svg" width="300"></p>
 </div><div class="column" style="width:50%;">
 <h3 id="wgpu-rust">wgpu (Rust)</h3>
 <ul>
-<li>Mozilla</li>
+<li>gfx-rs developers<sup>1</sup></li>
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/wgpu-logo.png" width="312"></p>
+<p><img data-src="images/wgpu-logo.png" width="234"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn4" role="doc-endnote"><p>The main developer was a Mozilla employee, and <a href="https://kvark.github.io/mozilla/2022/02/02/leaving-mozilla.html">recently left the company</a>. But, wgpu has been served under <code>gfx-rs</code> organization before that.</p></li></ol></aside></section>
 <section id="wgpu" class="slide level2">
 <h2>wgpu</h2>
 <ul>
@@ -638,7 +639,7 @@
 <li><p>Why not! I want a graphics device that can be messed up with shader magics (e.g.&nbsp;post effects)</p></li>
 <li><p>One serious reason is that there’s no an interactive graphics device that’s available on all of macOS, Linux, and Windows<sup>1</sup></p></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn4" role="doc-endnote"><p><a href="https://twitter.com/yutannihilat_en/status/1522204972280324097" class="uri">https://twitter.com/yutannihilat_en/status/1522204972280324097</a></p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn5" role="doc-endnote"><p><a href="https://twitter.com/yutannihilat_en/status/1522204972280324097" class="uri">https://twitter.com/yutannihilat_en/status/1522204972280324097</a></p></li></ol></aside></section>
 <section id="btw" class="slide level2">
 <h2>Btw,</h2>
 <ul>
@@ -659,7 +660,7 @@
 </ul>
 <p>→ Generate a Rust bindings for R’s C API by rust-bindgen, and wrap it nicely</p>
 </section>
-<section id="figure-1" class="slide level2">
+<section id="figure-2" class="slide level2">
 <h2>Figure</h2>
 
 <img data-src="images/zu2.png" class="r-stretch quarto-figure-center"></section>
@@ -741,7 +742,7 @@
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
-<col style="width: 50%">
+<col style="width: 48%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -784,7 +785,7 @@
 </tbody>
 </table>
 </section>
-<section id="figure-2" class="slide level2">
+<section id="figure-3" class="slide level2">
 <h2>Figure</h2>
 
 <img data-src="images/zu3.png" class="r-stretch quarto-figure-center"></section>

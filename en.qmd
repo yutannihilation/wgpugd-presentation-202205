@@ -138,7 +138,7 @@ dev.off()
 
 -   So, we need another abstraction layer over them.
 
-## 図
+## Figure
 
 ![](images/zu1.png){fig-align="center"}
 
@@ -162,19 +162,21 @@ dev.off()
 
     -   Security (see the last slide)
 
-    -   (IMHO) the code using Vulkan is lengthy
+    -   (IMHO) the code using Vulkan tends to be lengthy
+
+-   Other problems like [this](https://kvark.github.io/spirv/2021/05/01/spirv-horrors.html) and [this](https://kvark.github.io/3d/api/vulkan/2021/06/20/vulkan-alignment.html)
 
 [^2]: MoltenVK is for macOS / iOS. It should work to some extent, but I don't know well about this topic, sorry...
 
 ## Isn't WebGL or OpenGL enough for it?
 
--   -GL APIs are great in portability (actually WebGPU implementation uses OpenGL ES for the backend for platforms like embedded devices)
+-   -GL APIs are great in portability (actually WebGPU implementations use OpenGL ES as one of the backends)
 
 -   However, -GL APIs' design is not in line with modern GPU architectures, which causes computational and mental overhead [^3]
 
 [^3]: [WebGPU --- All of the cores, none of the canvas](https://surma.dev/things/webgpu/)
 
-## Major WebGPU implementations
+## WebGPU implementations
 
 ::: columns
 ::: {.column width="50%"}
@@ -182,17 +184,20 @@ dev.off()
 
 -   Google
 
-![](images/dawn-logo.svg){width="400"}
+![](images/dawn-logo.svg){width="300"}
 :::
 
 ::: {.column width="50%"}
 ### wgpu (Rust)
 
--   Mozilla
+-   gfx-rs developers[^4]
 
-![](images/wgpu-logo.png){fig-align="center" width="312"}
+![](images/wgpu-logo.png){fig-align="center" width="234"}
 :::
 :::
+
+[^4]: The main developer was a Mozilla employee, and [recently left the company](https://kvark.github.io/mozilla/2022/02/02/leaving-mozilla.html).
+But, wgpu has been served under `gfx-rs` organization before that.
 
 ## wgpu
 
@@ -222,9 +227,9 @@ Learn Wgpu: <https://sotrh.github.io/learn-wgpu/>
 
 -   Why not! I want a graphics device that can be messed up with shader magics (e.g. post effects)
 
--   One serious reason is that there's no an interactive graphics device that's available on all of macOS, Linux, and Windows[^4]
+-   One serious reason is that there's no an interactive graphics device that's available on all of macOS, Linux, and Windows[^5]
 
-[^4]: <https://twitter.com/yutannihilat_en/status/1522204972280324097>
+[^5]: <https://twitter.com/yutannihilat_en/status/1522204972280324097>
 
 ## Btw,
 
@@ -323,7 +328,7 @@ fn sd_circle(
 ## Current implementation
 
 | API        | Implementation        | Reason                                                                           |
-|------------------|------------------|------------------------------------|
+|-------------------|-------------------|------------------------------------|
 | `line()`   | tessellation          |                                                                                  |
 | `circle()` | SDF                   | A circle is drawn repeatedly (e.g. scatterplot), so SDF should be more efficient |
 | `rect()`   | tessellation          |                                                                                  |
